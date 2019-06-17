@@ -1,0 +1,528 @@
+
+> #####Load data set#####
+
+> fisheries <- readXL("F:/SOIS-project/Fisheries project/survey - USSD among FIsher women - final.xlsx", rownames=FALSE, header=TRUE, na="", sheet="Main Sheet", 
++   stringsAsFactors=TRUE)
+
+> library(tcltk, pos=15)
+
+> #####Numerical summaries#####
+
+> res <- NULL
+
+> res <- numSummary(fisheries[,"age"], groups=fisheries$Willingness.to.use.Mobile.Banking, statistics=c("mean", "sd", "quantiles"), quantiles=c(0,.25,.5,.75,1))
+
+> colnames(res$table)[1:2] <- gettextRcmdr( colnames(res$table)[1:2])
+
+> res
+      mean       sd 0%   25%  50% 75% 100% data:n
+0 48.15584 8.862884 27 41.25 48.5  55   72    154
+1 43.14847 7.536738 25 39.00 43.0  47   75    229
+
+> #####Two-sample t-test#####
+
+> group.names <- NULL
+
+> group.means <- NULL
+
+> group.sds <- NULL
+
+> group.p <- NULL
+
+> res <- NULL
+
+> (res <- t.test(age~factor(Willingness.to.use.Mobile.Banking), alternative='two.sided', conf.level=0.95, var.equal=TRUE, data=fisheries))
+
+	Two Sample t-test
+
+data:  age by factor(Willingness.to.use.Mobile.Banking)
+t = 5.9354, df = 381, p-value = 0.000000006597
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 3.348584 6.666161
+sample estimates:
+mean in group 0 mean in group 1 
+       48.15584        43.14847 
+
+
+> windows(width=7, height=7); par(lwd=1, las=1, family="sans", cex=1, mgp=c(3.0,1,0))
+
+> bar.means <- tapply(fisheries$age, factor(fisheries$Willingness.to.use.Mobile.Banking), mean, na.rm=TRUE)
+
+> bar.sds <- tapply(fisheries$age, factor(fisheries$Willingness.to.use.Mobile.Banking), sd, na.rm=TRUE)
+
+> bar.sds <- ifelse(is.na(bar.sds), 0, bar.sds)
+
+> barx <- barplot(bar.means, ylim=c(ifelse(min(bar.means, na.rm=TRUE)>0, 0, min(bar.means-bar.sds, na.rm=TRUE)*1.2), max(bar.means+bar.sds, na.rm=TRUE)*1.2), 
++   xlab="Willingness.to.use.Mobile.Banking", ylab="age", axis.lty=1)
+
+> error.bar(barx, bar.means, bar.sds)
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=0")
+
+> group.means <- c(group.means, bar.means[1])
+
+> group.sds <- c(group.sds, bar.sds[1])
+
+> group.p <- c(group.p, signif(res$p.value,digits=3))
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=1")
+
+> group.means <- c(group.means, bar.means[2])
+
+> group.sds <- c(group.sds, bar.sds[2])
+
+> group.p <- c(group.p, "")
+
+> summary.ttest <- NULL
+
+> summary.ttest <- data.frame(mean=group.means, sd=group.sds, p.value=group.p)
+
+> rownames(summary.ttest) <- group.names
+
+> colnames(summary.ttest) <- gettextRcmdr(colnames(summary.ttest))
+
+> summary.ttest
+                                        mean       sd      p.value
+Willingness.to.use.Mobile.Banking=0 48.15584 8.862884 0.0000000066
+Willingness.to.use.Mobile.Banking=1 43.14847 7.536738             
+
+> #####Numerical summaries#####
+
+> res <- NULL
+
+> res <- numSummary(fisheries[,"age"], groups=fisheries$Traning.for.Mobile.Banking, statistics=c("mean", "sd", "quantiles"), quantiles=c(0,.25,.5,.75,1))
+
+> colnames(res$table)[1:2] <- gettextRcmdr( colnames(res$table)[1:2])
+
+> res
+      mean       sd 0% 25% 50% 75% 100% data:n
+0 47.93571 9.650892 27  40  47  55   75    140
+1 43.56379 7.225346 25  39  43  49   63    243
+
+> #####Two-sample t-test#####
+
+> group.names <- NULL
+
+> group.means <- NULL
+
+> group.sds <- NULL
+
+> group.p <- NULL
+
+> res <- NULL
+
+> (res <- t.test(age~factor(Traning.for.Mobile.Banking), alternative='two.sided', conf.level=0.95, var.equal=TRUE, data=fisheries))
+
+	Two Sample t-test
+
+data:  age by factor(Traning.for.Mobile.Banking)
+t = 5.0287, df = 381, p-value = 0.000000762
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 2.662498 6.081359
+sample estimates:
+mean in group 0 mean in group 1 
+       47.93571        43.56379 
+
+
+> windows(width=7, height=7); par(lwd=1, las=1, family="sans", cex=1, mgp=c(3.0,1,0))
+
+> bar.means <- tapply(fisheries$age, factor(fisheries$Traning.for.Mobile.Banking), mean, na.rm=TRUE)
+
+> bar.sds <- tapply(fisheries$age, factor(fisheries$Traning.for.Mobile.Banking), sd, na.rm=TRUE)
+
+> bar.sds <- ifelse(is.na(bar.sds), 0, bar.sds)
+
+> barx <- barplot(bar.means, ylim=c(ifelse(min(bar.means, na.rm=TRUE)>0, 0, min(bar.means-bar.sds, na.rm=TRUE)*1.2), max(bar.means+bar.sds, na.rm=TRUE)*1.2), 
++   xlab="Traning.for.Mobile.Banking", ylab="age", axis.lty=1)
+
+> error.bar(barx, bar.means, bar.sds)
+
+> group.names <- c(group.names, "Traning.for.Mobile.Banking=0")
+
+> group.means <- c(group.means, bar.means[1])
+
+> group.sds <- c(group.sds, bar.sds[1])
+
+> group.p <- c(group.p, signif(res$p.value,digits=3))
+
+> group.names <- c(group.names, "Traning.for.Mobile.Banking=1")
+
+> group.means <- c(group.means, bar.means[2])
+
+> group.sds <- c(group.sds, bar.sds[2])
+
+> group.p <- c(group.p, "")
+
+> summary.ttest <- NULL
+
+> summary.ttest <- data.frame(mean=group.means, sd=group.sds, p.value=group.p)
+
+> rownames(summary.ttest) <- group.names
+
+> colnames(summary.ttest) <- gettextRcmdr(colnames(summary.ttest))
+
+> summary.ttest
+                                 mean       sd     p.value
+Traning.for.Mobile.Banking=0 47.93571 9.650892 0.000000762
+Traning.for.Mobile.Banking=1 43.56379 7.225346            
+
+> #####Numerical summaries#####
+
+> res <- NULL
+
+> res <- numSummary(fisheries[,"Education"], groups=fisheries$Willingness.to.use.Mobile.Banking, statistics=c("mean", "sd", "quantiles"), quantiles=c(0,.25,.5,
++   .75,1))
+
+> colnames(res$table)[1:2] <- gettextRcmdr( colnames(res$table)[1:2])
+
+> res
+      mean       sd 0% 25% 50% 75% 100% data:n
+0 3.357143 2.714470  0   0   3   5    9    154
+1 6.148472 2.728144  0   5   6   8   12    229
+
+> #####Mann-Whitney U test#####
+
+> group.names <- NULL
+
+> group.median <- NULL
+
+> group.min <- NULL
+
+> group.max <- NULL
+
+> group.1Q <- NULL
+
+> group.3Q <- NULL
+
+> group.p <- NULL
+
+> windows(width=7, height=7); par(lwd=1, las=1, family="sans", cex=1, mgp=c(3.0,1,0))
+
+> boxplot(Education~ factor(Willingness.to.use.Mobile.Banking), ylab="Education", xlab="Willingness.to.use.Mobile.Banking", data=fisheries)
+
+> (res <- wilcox.test(Education ~ factor(Willingness.to.use.Mobile.Banking), alternative="two.sided", data=fisheries))
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  Education by factor(Willingness.to.use.Mobile.Banking)
+W = 8822, p-value < 2.2e-16
+alternative hypothesis: true location shift is not equal to 0
+
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=0")
+
+> group.min <- c(group.min, with(fisheries, min(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='0'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='0'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.p <- c(group.p, signif(res$p.value,digits=3))
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=1")
+
+> group.min <- c(group.min, with(fisheries, min(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='1'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='1'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.p <- c(group.p, "")
+
+> mannwhitney.table <- NULL
+
+> mannwhitney.table <- data.frame(Minimum=group.min, Q1=group.1Q, Median=group.median, Q3=group.3Q, Maximum=group.max, p.value=group.p)
+
+> rownames(mannwhitney.table) <- group.names
+
+> colnames(mannwhitney.table)[c(2,4)] <- c("25%", "75%")
+
+> colnames(mannwhitney.table) <- gettextRcmdr(colnames(mannwhitney.table))
+
+> mannwhitney.table
+                                    Minimum 25% Median 75% Maximum p.value
+Willingness.to.use.Mobile.Banking=0       0   0      3   5       9 5.4e-17
+Willingness.to.use.Mobile.Banking=1       0   5      6   8      12        
+
+> #####Mann-Whitney U test#####
+
+> group.names <- NULL
+
+> group.median <- NULL
+
+> group.min <- NULL
+
+> group.max <- NULL
+
+> group.1Q <- NULL
+
+> group.3Q <- NULL
+
+> group.p <- NULL
+
+> windows(width=7, height=7); par(lwd=1, las=1, family="sans", cex=1, mgp=c(3.0,1,0))
+
+> boxplot(Education~ factor(Willingness.to.use.Mobile.Banking), ylab="Education", xlab="Willingness.to.use.Mobile.Banking", data=fisheries)
+
+> (res <- wilcox.test(Education ~ factor(Willingness.to.use.Mobile.Banking), alternative="two.sided", data=fisheries))
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  Education by factor(Willingness.to.use.Mobile.Banking)
+W = 8822, p-value < 2.2e-16
+alternative hypothesis: true location shift is not equal to 0
+
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=0")
+
+> group.min <- c(group.min, with(fisheries, min(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='0'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='0'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Education[Willingness.to.use.Mobile.Banking=='0'], na.rm=TRUE)))
+
+> group.p <- c(group.p, signif(res$p.value,digits=3))
+
+> group.names <- c(group.names, "Willingness.to.use.Mobile.Banking=1")
+
+> group.min <- c(group.min, with(fisheries, min(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='1'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Education[Willingness.to.use.Mobile.Banking=='1'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Education[Willingness.to.use.Mobile.Banking=='1'], na.rm=TRUE)))
+
+> group.p <- c(group.p, "")
+
+> mannwhitney.table <- NULL
+
+> mannwhitney.table <- data.frame(Minimum=group.min, Q1=group.1Q, Median=group.median, Q3=group.3Q, Maximum=group.max, p.value=group.p)
+
+> rownames(mannwhitney.table) <- group.names
+
+> colnames(mannwhitney.table)[c(2,4)] <- c("25%", "75%")
+
+> colnames(mannwhitney.table) <- gettextRcmdr(colnames(mannwhitney.table))
+
+> mannwhitney.table
+                                    Minimum 25% Median 75% Maximum p.value
+Willingness.to.use.Mobile.Banking=0       0   0      3   5       9 5.4e-17
+Willingness.to.use.Mobile.Banking=1       0   5      6   8      12        
+
+> #####Numerical summaries#####
+
+> res <- NULL
+
+> res <- numSummary(fisheries[,"Average.Per.day.sales"], groups=fisheries$Customer.request.for.digital.payment, statistics=c("mean", "sd", "quantiles"), 
++   quantiles=c(0,.25,.5,.75,1))
+
+> colnames(res$table)[1:2] <- gettextRcmdr( colnames(res$table)[1:2])
+
+> res
+      mean       sd   0%  25%  50%  75%  100% data:n
+0 4621.069 4353.862 1000 2000 4000 5000 25000    318
+1 6669.231 2274.651 2500 5000 6000 8000 15000     65
+
+> #####Mann-Whitney U test#####
+
+> group.names <- NULL
+
+> group.median <- NULL
+
+> group.min <- NULL
+
+> group.max <- NULL
+
+> group.1Q <- NULL
+
+> group.3Q <- NULL
+
+> group.p <- NULL
+
+> windows(width=7, height=7); par(lwd=1, las=1, family="sans", cex=1, mgp=c(3.0,1,0))
+
+> boxplot(Average.Per.day.sales~ factor(Customer.request.for.digital.payment), ylab="Average.Per.day.sales", xlab="Customer.request.for.digital.payment", 
++   data=fisheries)
+
+> (res <- wilcox.test(Average.Per.day.sales ~ factor(Customer.request.for.digital.payment), alternative="two.sided", data=fisheries))
+
+	Wilcoxon rank sum test with continuity correction
+
+data:  Average.Per.day.sales by factor(Customer.request.for.digital.payment)
+W = 4093.5, p-value = 1.133e-14
+alternative hypothesis: true location shift is not equal to 0
+
+
+> group.names <- c(group.names, "Customer.request.for.digital.payment=0")
+
+> group.min <- c(group.min, with(fisheries, min(Average.Per.day.sales[Customer.request.for.digital.payment=='0'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Average.Per.day.sales[Customer.request.for.digital.payment=='0'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Average.Per.day.sales[Customer.request.for.digital.payment=='0'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Average.Per.day.sales[Customer.request.for.digital.payment=='0'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Average.Per.day.sales[Customer.request.for.digital.payment=='0'], na.rm=TRUE)))
+
+> group.p <- c(group.p, signif(res$p.value,digits=3))
+
+> group.names <- c(group.names, "Customer.request.for.digital.payment=1")
+
+> group.min <- c(group.min, with(fisheries, min(Average.Per.day.sales[Customer.request.for.digital.payment=='1'], na.rm=TRUE)))
+
+> group.1Q <- c(group.1Q, with(fisheries, quantile(Average.Per.day.sales[Customer.request.for.digital.payment=='1'], 0.25, na.rm=TRUE)))
+
+> group.median <- c(group.median, with(fisheries, median(Average.Per.day.sales[Customer.request.for.digital.payment=='1'], na.rm=TRUE)))
+
+> group.3Q <- c(group.3Q, with(fisheries, quantile(Average.Per.day.sales[Customer.request.for.digital.payment=='1'], 0.75, na.rm=TRUE)))
+
+> group.max <- c(group.max, with(fisheries, max(Average.Per.day.sales[Customer.request.for.digital.payment=='1'], na.rm=TRUE)))
+
+> group.p <- c(group.p, "")
+
+> mannwhitney.table <- NULL
+
+> mannwhitney.table <- data.frame(Minimum=group.min, Q1=group.1Q, Median=group.median, Q3=group.3Q, Maximum=group.max, p.value=group.p)
+
+> rownames(mannwhitney.table) <- group.names
+
+> colnames(mannwhitney.table)[c(2,4)] <- c("25%", "75%")
+
+> colnames(mannwhitney.table) <- gettextRcmdr(colnames(mannwhitney.table))
+
+> mannwhitney.table
+                                       Minimum  25% Median  75% Maximum  p.value
+Customer.request.for.digital.payment=0    1000 2000   4000 5000   25000 1.13e-14
+Customer.request.for.digital.payment=1    2500 5000   6000 8000   15000         
+
+> library(abind, pos=16)
+
+> #####Create two-way table and compare two proportions (Fisher's exact test)#####
+
+> Fisher.summary.table <- NULL
+
+> .Table <- NULL
+
+> .Table <- xtabs(~Bank.Name+Debit.Card, data=fisheries)
+
+> .Table
+         Debit.Card
+Bank.Name  0  1
+       0   5  0
+       1  19  9
+       2  24  5
+       3  63 24
+       4  22  7
+       5  58 27
+       6  43 21
+       7  37  0
+       8   1  0
+       9   6  7
+       10  2  1
+       11  2  0
+
+> .Test <- chisq.test(.Table, correct=FALSE)
+
+> .Test
+
+	Pearson's Chi-squared test
+
+data:  .Table
+X-squared = 25.754, df = 11, p-value = 0.00706
+
+
+> .Test$expected # Expected Counts
+         Debit.Card
+Bank.Name          0          1
+       0   3.6814621  1.3185379
+       1  20.6161880  7.3838120
+       2  21.3524804  7.6475196
+       3  64.0574413 22.9425587
+       4  21.3524804  7.6475196
+       5  62.5848564 22.4151436
+       6  47.1227154 16.8772846
+       7  27.2428198  9.7571802
+       8   0.7362924  0.2637076
+       9   9.5718016  3.4281984
+       10  2.2088773  0.7911227
+       11  1.4725849  0.5274151
+
+> remove(.Test)
+
+> res <- NULL
+
+> res <- chisq.test(.Table, correct=FALSE)
+
+> Fisher.summary.table <- rbind(Fisher.summary.table, summary.table.twoway(table=.Table, res=res))
+
+> colnames(Fisher.summary.table)[length(Fisher.summary.table)] <-  gettextRcmdr( colnames(Fisher.summary.table)[length(Fisher.summary.table)])
+
+> Fisher.summary.table
+             Debit.Card=0 Debit.Card=1 Chisq.p.value
+Bank.Name=0             5            0       0.00706
+Bank.Name=1            19            9              
+Bank.Name=2            24            5              
+Bank.Name=3            63           24              
+Bank.Name=4            22            7              
+Bank.Name=5            58           27              
+Bank.Name=6            43           21              
+Bank.Name=7            37            0              
+Bank.Name=8             1            0              
+Bank.Name=9             6            7              
+Bank.Name=10            2            1              
+Bank.Name=11            2            0              
+
+> #####Create two-way table and compare two proportions (Fisher's exact test)#####
+
+> Fisher.summary.table <- NULL
+
+> .Table <- NULL
+
+> .Table <- xtabs(~Bank.Name+Debit.Card, data=fisheries)
+
+> .Table
+         Debit.Card
+Bank.Name  0  1
+       0   5  0
+       1  19  9
+       2  24  5
+       3  63 24
+       4  22  7
+       5  58 27
+       6  43 21
+       7  37  0
+       8   1  0
+       9   6  7
+       10  2  1
+       11  2  0
+
+> fisher.test(.Table)
+
+> res <- NULL
+
+> res <- fisher.test(.Table)
+
+> Fisher.summary.table <- rbind(Fisher.summary.table, summary.table.twoway(table=.Table, res=res))
+
+> colnames(Fisher.summary.table)[length(Fisher.summary.table)] <-  gettextRcmdr( colnames(Fisher.summary.table)[length(Fisher.summary.table)])
+
+> Fisher.summary.table
+
